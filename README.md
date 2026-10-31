@@ -1,50 +1,378 @@
-# Ex.No-09-Building-a-Simple-AI-Agent-AI-Tourist-Guiide-for-India
-## Aim : To design, implement and test a simple goal-based AI agent in Python that plans a personalised India trip itinerary for a tourist, based on the tourist's interest, trip duration and daily budget.
-Introduction
-An AI agent is anything that can perceive its environment through sensors and act upon that environment through actuators in order to achieve a specific goal. A useful way to describe an agent is the PEAS framework — Performance measure, Environment, Actuators and Sensors. Agents are commonly classified as simple reflex agents (react only to the current input), goal-based agents (choose actions that achieve a defined goal) and utility-based agents (choose the action that maximises a measure of “goodness”). In this experiment, an AI Tourist Agent for India is built as a goal-based agent: given a tourist's goal (an enjoyable trip within their interest and budget), the agent perceives the tourist's preferences, reasons over a knowledge base of Indian destinations, plans a day-wise itinerary, and acts by presenting the recommended plan.
-Procedure
-### Step 1: Import Required Libraries
-●	textwrap – used only to neatly wrap long destination descriptions to a fixed line width while printing the itinerary.
-<img width="584" height="34" alt="image" src="https://github.com/user-attachments/assets/d7bd1246-346f-41f8-aec1-fddca7a8e120" />
-### Step 2: Define the Agent's Knowledge Base (Destination Database)
-●	The agent's environment knowledge is stored as a list of dictionaries, one per Indian destination.
-●	Each destination has a category (heritage, spiritual, beach, hill_station, adventure, nature, wildlife), an estimated cost per day, the best travel season and a short description.
-●	This knowledge base plays the same role for the agent that the environment model plays for any goal-based agent — it is what the agent reasons over to choose its actions.
-<img width="619" height="236" alt="image" src="https://github.com/user-attachments/assets/4182dfe7-9114-4557-a80f-a8756a48b2f5" />
-<img width="615" height="347" alt="image" src="https://github.com/user-attachments/assets/320ffc13-4890-4761-9499-34426c329b35" />
-Destination Knowledge Base Summary
-The table below summarises the destinations available to the agent:
-<img width="673" height="213" alt="image" src="https://github.com/user-attachments/assets/c5fea0c9-95f2-482f-a1fb-d9cfafdcf2ea" />
-### Step 3: Perceive — Read the Tourist's Goal / Preferences
-●	The perceive() function represents the agent's sensors: it reads the tourist's profile (interest category, number of days, daily budget) and displays it back to confirm what was understood.
-<img width="585" height="109" alt="image" src="https://github.com/user-attachments/assets/81c0cc39-ba1f-4736-8a51-1eb1ba2ff3f8" />
-### Step 4: Reason — Filter and Rank Matching Destinations
-●	The agent compares every destination in its knowledge base against the tourist's goal: same category and cost per day within the daily budget.
-●	If nothing fits the exact budget, it falls back to all destinations of the requested category, sorted from cheapest to costliest, so the agent always tries to return a useful plan.
-<img width="615" height="148" alt="image" src="https://github.com/user-attachments/assets/ba53e68e-5fb0-4673-83cf-5b705751df15" />
-### Step 5: Plan — Build a Day-wise Itinerary
-●	The agent allocates up to 3 days per destination and moves to the next matching destination once those days are used, cycling back to the first if needed for longer trips.
-●	Consecutive days at the same destination are merged into a single itinerary block, and the total estimated cost is calculated as it plans.
-<img width="612" height="290" alt="image" src="https://github.com/user-attachments/assets/f793c485-908e-4e98-84ca-119671909652" />
-### Step 6: Act — Present the Recommendation to the Tourist
-●	The act() function represents the agent's actuator: it prints a readable, day-wise itinerary with the destination, description, best season and cost for each leg of the trip, followed by the total estimated cost.
-<img width="576" height="177" alt="image" src="https://github.com/user-attachments/assets/55712bdf-2b82-42b0-83f7-5b3eb7d94263" />
-<img width="632" height="89" alt="image" src="https://github.com/user-attachments/assets/9a254225-96b6-4729-be35-29cac298c28d" />
-### Step 7: The Agent Loop — Perceive → Reason → Plan → Act
-●	run_agent() ties the four stages together into a single agent cycle, exactly as a real autonomous agent continuously perceives, reasons and acts within its environment.
-<img width="432" height="89" alt="image" src="https://github.com/user-attachments/assets/0a46568e-9781-457b-8a10-e2a97a95c0a2" />
-### Step 8: Test the Agent with Sample Tourist Profiles
-●	Three realistic tourist profiles are used to test the agent across different interests and budgets: a budget heritage traveller, a mid-budget adventure seeker, and a family looking for a beach holiday.
-<img width="616" height="241" alt="image" src="https://github.com/user-attachments/assets/17613086-5b61-44f1-8d85-cbbae85cfc4b" />
-### Output
-Agent Output – Session 1 (Budget Heritage Traveller)
-●	The agent correctly perceives Ananya's preferences, reasons that Taj Mahal and Jaipur are the matching heritage destinations within budget, and plans a 6-day itinerary split evenly between them.
-<img width="677" height="373" alt="image" src="https://github.com/user-attachments/assets/c92635bd-dffc-470d-ad75-2b8f806e3c70" />
-Agent Output – Sessions 2 and 3 (Adventure Seeker and Beach Holiday)
-●	For the adventure seeker, the agent plans a trip across Coorg and Spiti Valley, both within the Rs. 5,000/day budget.
-●	For the beach-holiday family, the agent alternates between Goa and the Andaman Islands to fill all 7 requested days, and the total estimated cost is calculated automatically for each plan.
-<img width="620" height="532" alt="image" src="https://github.com/user-attachments/assets/d0d7a414-912d-4768-8b4f-933a1037a4c6" />
-Fig 2: Console output for the adventure-seeker and beach-holiday profiles, each with a complete itinerary and total cost.
-## Conclusion
-Thus, a simple goal-based AI Tourist Agent for India was successfully designed, implemented and tested using Python. The agent follows the classic Perceive → Reason → Plan → Act cycle: it perceives a tourist's goal (interest, duration and budget), reasons over a knowledge base of Indian destinations to find matching options, plans a day-wise itinerary, and acts by presenting a complete, costed trip recommendation. This experiment demonstrates the core building blocks of autonomous agents — environment knowledge, perception, reasoning/planning and action — on which more advanced AI agents (using machine learning, real-time APIs and large language models) are built.
 
+# Experiment No. 9 — Building a Simple AI Agent: AI Tourist Guide for India
+
+## Aim
+
+To design, implement, and test a simple goal-based AI agent in Python that plans a personalized India trip itinerary based on a tourist's interests, trip duration, and daily budget.
+
+## Objectives
+
+- Understand the structure and working principles of a goal-based AI agent.
+- Apply the PEAS framework to a travel-planning problem.
+- Create a knowledge base of Indian tourist destinations.
+- Implement perception, reasoning, planning, and action functions.
+- Generate and test personalized, budget-aware travel itineraries.
+
+## Introduction
+
+An AI agent perceives its environment through sensors and acts upon it through actuators to achieve a specific goal. The PEAS framework describes an agent in terms of its **Performance measure, Environment, Actuators, and Sensors**.
+
+Agents can be classified as simple reflex agents, goal-based agents, and utility-based agents. A goal-based agent selects actions that help achieve a specified goal.
+
+In this experiment, an AI Tourist Agent for India is developed to recommend a trip itinerary based on a tourist's interests, available days, and daily budget. The agent uses a predefined destination knowledge base to filter suitable destinations, plan a day-wise itinerary, and present an estimated trip cost.
+
+![AI travel planning concept](https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80)
+
+## PEAS Framework
+
+| Component | Description |
+|---|---|
+| **Performance Measure** | Interest matching, budget compliance, itinerary completeness, and useful recommendations |
+| **Environment** | Indian tourist destinations and the tourist's preferences |
+| **Actuators** | Displaying recommended destinations, itinerary details, and estimated costs |
+| **Sensors** | User-provided interest category, trip duration, and daily budget |
+
+## Tools and Technologies
+
+- **Programming language:** Python 3
+- **Library:** `textwrap`
+- **Environment:** Python IDE or terminal
+
+## System Architecture
+
+```text
+        ┌──────────────────────────┐
+        │      Tourist Input       │
+        │ Interest, Days, Budget   │
+        └─────────────┬────────────┘
+                      │
+        ┌─────────────▼────────────┐
+        │       PERCEIVE          │
+        │ Read Tourist Profile    │
+        └─────────────┬────────────┘
+                      │
+        ┌─────────────▼────────────┐
+        │        REASON           │
+        │ Filter Destinations by  │
+        │ Interest and Budget     │
+        └─────────────┬────────────┘
+                      │
+        ┌─────────────▼────────────┐
+        │         PLAN            │
+        │ Build Day-wise Itinerary│
+        └─────────────┬────────────┘
+                      │
+        ┌─────────────▼────────────┐
+        │          ACT            │
+        │ Display Trip Plan       │
+        │ and Estimated Cost      │
+        └─────────────────────────┘
+```
+
+## Procedure
+
+### Step 1: Import Required Libraries
+
+The `textwrap` library is used to wrap long destination descriptions neatly when printing the itinerary.
+
+```python
+import textwrap
+```
+
+### Step 2: Define the Agent's Knowledge Base
+
+The destination database is a list of dictionaries. Each destination contains its name, category, estimated daily cost, best travel season, and description.
+
+```python
+destinations = [
+    {
+        "name": "Taj Mahal, Agra",
+        "category": "heritage",
+        "cost_per_day": 3000,
+        "best_season": "October to March",
+        "description": "Visit the iconic marble mausoleum, a UNESCO World Heritage Site."
+    },
+    {
+        "name": "Jaipur, Rajasthan",
+        "category": "heritage",
+        "cost_per_day": 2500,
+        "best_season": "October to March",
+        "description": "Explore royal palaces, forts, colourful markets, and historic architecture."
+    },
+    {
+        "name": "Varanasi, Uttar Pradesh",
+        "category": "spiritual",
+        "cost_per_day": 2000,
+        "best_season": "October to March",
+        "description": "Experience the sacred ghats, temples, and spiritual traditions of the Ganges."
+    },
+    {
+        "name": "Rishikesh, Uttarakhand",
+        "category": "adventure",
+        "cost_per_day": 3500,
+        "best_season": "September to November and March to May",
+        "description": "Enjoy river rafting, yoga, and outdoor adventures in the Himalayan foothills."
+    },
+    {
+        "name": "Goa",
+        "category": "beach",
+        "cost_per_day": 4000,
+        "best_season": "November to February",
+        "description": "Relax on beaches, explore coastal towns, and enjoy local cuisine."
+    },
+    {
+        "name": "Andaman Islands",
+        "category": "beach",
+        "cost_per_day": 5000,
+        "best_season": "October to May",
+        "description": "Discover clear waters, tropical beaches, and marine activities."
+    },
+    {
+        "name": "Coorg, Karnataka",
+        "category": "nature",
+        "cost_per_day": 3000,
+        "best_season": "October to March",
+        "description": "Explore coffee plantations, green hills, waterfalls, and forest trails."
+    },
+    {
+        "name": "Spiti Valley, Himachal Pradesh",
+        "category": "adventure",
+        "cost_per_day": 4500,
+        "best_season": "May to October",
+        "description": "Discover dramatic mountain landscapes, remote villages, and monasteries."
+    },
+    {
+        "name": "Kaziranga, Assam",
+        "category": "wildlife",
+        "cost_per_day": 3500,
+        "best_season": "November to April",
+        "description": "Explore a renowned national park known for its one-horned rhinoceroses."
+    },
+    {
+        "name": "Ooty, Tamil Nadu",
+        "category": "hill_station",
+        "cost_per_day": 2500,
+        "best_season": "October to June",
+        "description": "Enjoy cool weather, tea gardens, scenic viewpoints, and mountain railways."
+    }
+]
+```
+
+### Step 3: Perceive the Tourist's Preferences
+
+The `perceive()` function represents the agent's sensors. It reads the tourist's interest, trip duration, and daily budget.
+
+```python
+def perceive(tourist):
+    print("\n--- Tourist Profile ---")
+    print(f"Interest: {tourist['interest']}")
+    print(f"Trip Duration: {tourist['days']} days")
+    print(f"Daily Budget: Rs. {tourist['budget']:,}")
+    return tourist
+```
+
+### Step 4: Reason — Filter and Rank Destinations
+
+The `reason()` function selects destinations matching the requested category and daily budget. If no destination fits the budget, it returns destinations in the requested category ordered from least to most expensive.
+
+```python
+def reason(tourist, destinations):
+    interest = tourist["interest"].lower()
+    budget = tourist["budget"]
+
+    matching = [
+        destination
+        for destination in destinations
+        if destination["category"] == interest
+        and destination["cost_per_day"] <= budget
+    ]
+
+    if not matching:
+        matching = [
+            destination
+            for destination in destinations
+            if destination["category"] == interest
+        ]
+
+    return sorted(
+        matching,
+        key=lambda destination: destination["cost_per_day"]
+    )
+```
+
+### Step 5: Plan — Build a Day-wise Itinerary
+
+The `plan()` function allocates up to three days per destination. It moves to the next destination when the current allocation is complete and cycles through matching destinations if more days are required.
+
+Consecutive days at the same destination are combined into one itinerary block. The total estimated cost is calculated from the daily cost and allocated days.
+
+```python
+def plan(tourist, matching_destinations):
+    if not matching_destinations:
+        return [], 0
+
+    days_remaining = tourist["days"]
+    itinerary = []
+    destination_index = 0
+    total_cost = 0
+
+    while days_remaining > 0:
+        destination = matching_destinations[
+            destination_index % len(matching_destinations)
+        ]
+
+        allocated_days = min(3, days_remaining)
+
+        itinerary.append({
+            "destination": destination,
+            "days": allocated_days
+        })
+
+        total_cost += destination["cost_per_day"] * allocated_days
+        days_remaining -= allocated_days
+        destination_index += 1
+
+    return itinerary, total_cost
+```
+
+### Step 6: Act — Present the Itinerary
+
+The `act()` function displays the itinerary, including destination details, travel season, allocated days, daily cost, and total estimated cost.
+
+```python
+def act(itinerary, total_cost):
+    if not itinerary:
+        print("\nNo destinations were found for this interest.")
+        return
+
+    print("\n" + "=" * 60)
+    print("       PERSONALIZED INDIA TRAVEL ITINERARY")
+    print("=" * 60)
+
+    current_day = 1
+
+    for item in itinerary:
+        destination = item["destination"]
+        days = item["days"]
+        end_day = current_day + days - 1
+
+        print(f"\nDays {current_day}-{end_day}: {destination['name']}")
+        print(f"Category: {destination['category'].replace('_', ' ').title()}")
+        print(f"Best Season: {destination['best_season']}")
+        print(f"Daily Estimated Cost: Rs. {destination['cost_per_day']:,}")
+
+        description = textwrap.fill(
+            destination["description"],
+            width=70,
+            subsequent_indent="    "
+        )
+        print("Description:", description)
+
+        current_day = end_day + 1
+
+    print("\n" + "-" * 60)
+    print(f"Total Estimated Trip Cost: Rs. {total_cost:,}")
+    print("=" * 60)
+```
+
+### Step 7: Create the Agent Loop
+
+The `run_agent()` function combines perception, reasoning, planning, and action into one complete agent cycle.
+
+```python
+def run_agent(tourist):
+    tourist = perceive(tourist)
+    matching_destinations = reason(tourist, destinations)
+    itinerary, total_cost = plan(tourist, matching_destinations)
+    act(itinerary, total_cost)
+```
+
+### Step 8: Test the Agent with Sample Tourist Profiles
+
+Three tourist profiles are used to test the agent with different interests, trip durations, and budgets.
+
+```python
+tourists = [
+    {
+        "name": "Ananya",
+        "interest": "heritage",
+        "days": 6,
+        "budget": 3500
+    },
+    {
+        "name": "Rahul",
+        "interest": "adventure",
+        "days": 5,
+        "budget": 5000
+    },
+    {
+        "name": "Meera",
+        "interest": "beach",
+        "days": 7,
+        "budget": 5500
+    }
+]
+
+for tourist in tourists:
+    print(f"\n\nTourist: {tourist['name']}")
+    run_agent(tourist)
+```
+
+## Results and Observations
+
+The agent was tested with three sample tourist profiles.
+
+| Tourist | Interest | Duration | Daily Budget |
+|---|---|---:|---:|
+| Ananya | Heritage | 6 days | Rs. 3,500 |
+| Rahul | Adventure | 5 days | Rs. 5,000 |
+| Meera | Beach | 7 days | Rs. 5,500 |
+
+The agent filters destinations by category and budget, generates a day-wise itinerary, and calculates the estimated trip cost.
+
+### Sample Output
+
+```text
+Tourist: Ananya
+
+--- Tourist Profile ---
+Interest: heritage
+Trip Duration: 6 days
+Daily Budget: Rs. 3,500
+
+============================================================
+       PERSONALIZED INDIA TRAVEL ITINERARY
+============================================================
+
+Days 1-3: Jaipur, Rajasthan
+Category: Heritage
+Best Season: October to March
+Daily Estimated Cost: Rs. 2,500
+Description: Explore royal palaces, forts, colourful markets, and
+    historic architecture.
+
+Days 4-6: Taj Mahal, Agra
+Category: Heritage
+Best Season: October to March
+Daily Estimated Cost: Rs. 3,000
+Description: Visit the iconic marble mausoleum, a UNESCO World
+    Heritage Site.
+
+------------------------------------------------------------
+Total Estimated Trip Cost: Rs. 16,500
+============================================================
+```
+
+## Limitations
+
+- Destination information and costs are predefined estimates.
+- The agent does not retrieve live hotel, transport, or ticket prices.
+- Travel time and distance between destinations are not considered.
+- Seasonal recommendations are static and may not reflect current conditions.
+- If no destination fits the budget, the agent may recommend destinations that exceed it.
+
+## Conclusion
+
+A simple goal-based AI Tourist Agent for India was successfully designed, implemented, and tested using Python. The agent follows the **Perceive → Reason → Plan → Act** cycle: it perceives a tourist's interests, duration, and budget; reasons over a destination knowledge base; plans a day-wise itinerary; and presents a trip recommendation with estimated costs.
+
+This experiment demonstrates the fundamental components of autonomous agents, including environment knowledge, perception, reasoning, planning, and action. These concepts form the foundation for more advanced AI agents that use machine learning, real-time APIs, and large language models.
